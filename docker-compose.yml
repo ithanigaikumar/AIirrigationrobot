@@ -1,0 +1,48 @@
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: always
+    networks:
+    - default
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto:/etc/mosquitto
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    container_name: timescaledb
+    restart: always
+    networks:
+    - default
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./timescaledb:/var/lib/postgresql/data
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    user: "$PUID:$PGID"
+    networks:
+    - default
+    ports:
+      - "3000:3000"
+    depends_on:
+      - timescaledb
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+    volumes:
+      - ./grafana:/var/lib/grafana
+
+networks:
+  default:
+    driver: bridge

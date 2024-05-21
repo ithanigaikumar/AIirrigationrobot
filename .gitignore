@@ -1,1 +1,5 @@
 env/
+app/.env
+app/__pycache__/*
+app/routers/__pycache__/*
+app/services/__pycache__/*
