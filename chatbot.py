@@ -7,7 +7,7 @@ from unify import AsyncUnify
 
 
 url = 'https://api.eu-gb.assistant.watson.cloud.ibm.com/instances/d6d2737e-ab10-4938-8138-2ca6fdc53c13'
-apikey = 'l9Dk_4NIA6r5bnFVdW3imz3I1qcXEegbXCnWVXRFKECF'
+apikey = 'NaOpqCulXr6H5w2jajwz8DQEY6_1sPpi7JBd-rEhPrGJ'
 
 
 def handle_chat(url, apikey, user_input):
@@ -22,7 +22,8 @@ def handle_chat(url, apikey, user_input):
     # Create a session
     session_response = assistant.create_session(
         # Replace with your actual assistant ID
-        assistant_id='d2b86adf-a2dd-4f2b-af00-fb39dca03538'
+        
+        assistant_id="d6d2737e-ab10-4938-8138-2ca6fdc53c13"
     ).get_result()
     session_id = session_response['session_id']
 
