@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 import streamlit as st
 import asyncio
 from unify import AsyncUnify
+import requests
 
 
 url_tts = 'https://api.au-syd.text-to-speech.watson.cloud.ibm.com/instances/ff1632e5-41e3-4736-9b2c-267fd9bce21f'
@@ -16,8 +17,8 @@ authenticator = IAMAuthenticator(apikey_tts)
 tts = TextToSpeechV1(authenticator=authenticator)
 tts.set_service_url(url_tts)
 
-sunlight_level = random()
-moisture_level = random()
+sunlight_level = requests.get("https://irrigation.ajanthank.com/devices/0/light").text
+moisture_level = requests.get("https://irrigation.ajanthank.com/devices/0/moisture").text
 
 
 with open('./moisture_speech.mp3', 'wb') as audio_file:
@@ -95,8 +96,8 @@ def main():
             "claude-3-haiku", "claude-3-opus", "claude-3-sonnet"
         ]
         selected_model = st.sidebar.selectbox("Choose a model", model_list)
-
-        if sunlight_level < 0.5:
+        
+        if float(sunlight_level) ==-1:
             print(sunlight_level)
             st.sidebar.markdown(
                 "### Play the audio to hear updates about your plants")
@@ -105,7 +106,7 @@ def main():
                 st.sidebar.audio(audio_bytes_sun, format='audio/mp3')
                 audio_played = True
 
-        if moisture_level < 0.5:
+        if float(moisture_level) ==-1:
             print(moisture_level)
             st.sidebar.markdown(
                 "### Play the audio to hear updates about your plants")
@@ -150,6 +151,6 @@ def main():
             else:
                 st.error("Please enter valid keys to start chatting.")
 
-
+# graph in
 if __name__ == "__main__":
     main()
