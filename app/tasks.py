@@ -1,4 +1,5 @@
 import asyncio
+
 from app.services.weather_service import WeatherService
 
 
@@ -6,4 +7,4 @@ from app.services.weather_service import WeatherService
 async def fetch_forecast_periodically():
     while True:
         WeatherService.fetch_and_store_weather_data()
-        await asyncio.sleep(60*60*6)
+        await asyncio.sleep(60 * 60 * 6)

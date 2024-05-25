@@ -1,15 +1,17 @@
 import asyncio
 
-from fastapi import FastAPI
-from app.routers import plants, devices, weather
-from app import mqtt_client, tasks
+from fastapi import FastAPI, Depends
 
-mqtt_client.start_mqtt_loop()
+from app import tasks
+from app.routers import plants, devices, weather
+from app.services.device_service import DeviceService
+
+device_service = DeviceService()
 
 app = FastAPI()
 
+app.include_router(devices.router, dependencies=[Depends(lambda: device_service)])
 app.include_router(plants.router)
-app.include_router(devices.router)
 app.include_router(weather.router)
 
 

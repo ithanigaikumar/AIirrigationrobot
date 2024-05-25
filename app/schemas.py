@@ -9,6 +9,8 @@ class PlantCreate(BaseModel):
     moisture: float
 
 
-class DeviceCreate(BaseModel):
-    device_id: str
-    plant_id: str
+class SensorData(BaseModel):
+    light: float
+    temperature: float
+    moisture: float
+    humidity: float

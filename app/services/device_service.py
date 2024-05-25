@@ -1,11 +1,17 @@
 import json
 from datetime import datetime
-from app.database import get_db_connection
+
 from app.config import settings
-from app.mqtt_client import mqtt_client
+from app.database import get_db_connection
+from app.mqtt_client import MQTTClient
 
 
 class DeviceService:
+
+    def __init__(self):
+        self.mqtt_client = MQTTClient(self)
+        self.mqtt_client.connect(settings.MQTT_BROKER_URL, settings.MQTT_BROKER_PORT)
+
     @staticmethod
     def create_device(device_id: str, plant_id: str):
         conn = get_db_connection()
@@ -56,8 +62,7 @@ class DeviceService:
         }
         return sensor_data
 
-    @staticmethod
-    def send_command(device_id: str, command: str):
+    def send_command(self, device_id: str, command: str):
         # Placeholder to send a command to a device via MQTT
-        mqtt_client.publish(f"{settings.MQTT_COMMAND_TOPIC}/{device_id}", command)
+        self.mqtt_client.publish(f"{settings.MQTT_COMMAND_TOPIC}/{device_id}", command)
         pass

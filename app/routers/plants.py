@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
+
 from app import schemas
 from app.services.plant_service import PlantService
 
