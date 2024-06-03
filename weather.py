@@ -10,8 +10,8 @@ def get_location():
         print(f"Error getting location: {e}")
         return None
 
-def get_weather(api_key, latitude, longitude):
-    base_url = "https://api.weather.com/v3/wx/forecast/daily/3day"
+def get_hourly_forecast(api_key, latitude, longitude, duration="2day"):
+    base_url = f"https://api.weather.com/v3/wx/forecast/hourly/{duration}"
     params = {
         "apiKey": api_key,
         "format": "json",
@@ -24,32 +24,29 @@ def get_weather(api_key, latitude, longitude):
     if response.status_code == 200:
         try:
             data = response.json()
-            weather_info = {
-                "day1_forecast": data.get("daypart")[0].get("narrative")[0],
-                "day2_forecast": data.get("daypart")[0].get("narrative")[2],
-                "day3_forecast": data.get("daypart")[0].get("narrative")[4]
-            }
-            return weather_info
+            return data
         except requests.exceptions.JSONDecodeError as e:
             print(f"JSON decode error: {e}")
             print(f"Response content: {response.text}")
-            return {"error": "Failed to parse weather data"}
+            return {"error": "Failed to parse hourly forecast data"}
     else:
-        print(f"Error fetching weather data: HTTP {response.status_code}")
+        print(f"Error fetching hourly forecast data: HTTP {response.status_code}")
         print(f"Response content: {response.text}")
         if response.status_code == 401:
             print("Check your API key and permissions.")
-        return {"error": "Could not fetch weather data"}
+        return {"error": "Could not fetch hourly forecast data"}
 
 # Example usage:
-api_key = "3769d4edebe64b13a9d4edebe6cb138d"  # Ensure this is correct and valid
+api_key = "3769d4edebe64b13a9d4edebe6cb138d"  # Your provided API key
 location = get_location()
 if location:
     latitude, longitude = location
-    weather_info = get_weather(api_key, latitude, longitude)
-    print(weather_info)
+    hourly_forecast_info = get_hourly_forecast(api_key, latitude, longitude, duration="2day")
+    if isinstance(hourly_forecast_info, dict) and "error" in hourly_forecast_info:
+        print(hourly_forecast_info["error"])
+    else:
+        print("Hourly Forecast Information:")
+        for time, precip_chance in zip(hourly_forecast_info['validTimeLocal'], hourly_forecast_info['precipChance']):
+            print(f"Time: {time}, Precipitation Chance: {precip_chance}%")
 else:
     print("Could not determine location")
-
-
-#3769d4edebe64b13a9d4edebe6cb138d
