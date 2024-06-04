@@ -17,8 +17,12 @@ authenticator = IAMAuthenticator(apikey_tts)
 tts = TextToSpeechV1(authenticator=authenticator)
 tts.set_service_url(url_tts)
 
-sunlight_level = requests.get("https://irrigation.ajanthank.com/devices/0/light").text
-moisture_level = requests.get("https://irrigation.ajanthank.com/devices/0/moisture").text
+response= requests.get("https://irrigation.ajanthank.com/devices/0/status")
+data=response.json()
+print(data)
+moisture_level = data["moisture"]["status"]
+sunlight_level=data["light"]["status"]
+
 
 
 with open('./moisture_speech.mp3', 'wb') as audio_file:
