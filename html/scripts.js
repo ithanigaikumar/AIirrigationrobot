@@ -1,38 +1,66 @@
-window.watsonAssistantChatOptions = {
-    integrationID: "fc782640-6d4f-442e-9cdf-b79a99a72ca6",
-    region: "eu-gb",
-    serviceInstanceID: "d6d2737e-ab10-4938-8138-2ca6fdc53c13",
-    onLoad: async (instance) => { await instance.render(); }
-};
-setTimeout(function () {
-    const t = document.createElement('script');
-    t.src = "https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
-    document.head.appendChild(t);
-});
+// Flags to track if audio is ready
+let moistureAudioReady = false;
+let sunlightAudioReady = false;
 
-function initializeChat() {
-    const unifyKey = document.getElementById('unifyKeyInput').value;
-    const model = document.getElementById('modelSelector').value;
-    console.log(`Unify Key: ${unifyKey}, Model: ${model}`);
-    // Additional initialization code can be added here
+function checkPlantStatus() {
+    fetch("https://irrigation.ajanthank.com/devices/0/status")
+        .then(response => response.json())
+        .then(data => {
+            const moistureStatus = data.moisture.status;
+            const sunlightStatus = data.light.status;
+
+            if (moistureStatus === -1) {
+                synthesizeAndPrepare('moistureAudio', 'Your plant has dropped below moisture levels and is too dry, please water it!', () => {
+                    moistureAudioReady = true;
+                    playAudioIfReady();
+                });
+            } else {
+                moistureAudioReady = true;
+                playAudioIfReady();
+            }
+
+            if (sunlightStatus === -1) {
+                synthesizeAndPrepare('sunlightAudio', 'Your plant has not absorbed enough sunlight for today please move it into the sunlight!', () => {
+                    sunlightAudioReady = true;
+                    playAudioIfReady();
+                });
+            } else {
+                sunlightAudioReady = true;
+                playAudioIfReady();
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }
 
-function sendMessage() {
-    const message = document.getElementById('chatInput').value;
-    console.log(`Message sent: ${message}`);
-    // Implement sending message to backend here
+function synthesizeAndPrepare(audioId, message, callback) {
+    console.log(`Synthesizing and preparing audio: ${audioId}, message: ${message}`);
+    const utterance = new SpeechSynthesisUtterance(message);
+    utterance.onend = () => {
+        callback();
+    };
+    speechSynthesis.speak(utterance);
 }
 
-// Populate the model selector
-document.addEventListener('DOMContentLoaded', function () {
-    const models = [
-        "mixtral-8x7b-instruct-v0.1", "llama-2-70b-chat", /* more models */
-    ];
-    const modelSelector = document.getElementById('modelSelector');
-    models.forEach(model => {
-        const option = document.createElement('option');
-        option.value = model;
-        option.textContent = model;
-        modelSelector.appendChild(option);
-    });
+function playAudioIfReady() {
+    if (moistureAudioReady && sunlightAudioReady) {
+        console.log("Both audio messages are ready to play.");
+        // Additional logic to handle simultaneous audio playback if needed
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const leavesContainer = document.getElementById('leaves-container');
+    const numberOfLeaves = 20; // Adjust the number of leaves as needed
+
+    for (let i = 0; i < numberOfLeaves; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'leaf';
+        leaf.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+        leaf.style.animationDuration = `${Math.random() * 5 + 5}s`; // Random fall duration
+        leaf.style.opacity = `${Math.random()}`; // Random opacity
+        leavesContainer.appendChild(leaf);
+    }
 });
+
+// Test the function
+checkPlantStatus();

@@ -2,25 +2,91 @@ body,
 html {
     margin: 0;
     padding: 0;
+    height: 100%;
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
 }
 
 #chatContainer {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+#speakingAvatar {
+    width: 100px;
+    height: 100px;
+}
+
+audio {
+    display: none;
+}
+
+/* Plant theme customizations */
+body.bg-light {
+    position: relative;
+    overflow: hidden;
+    background: url('tulip.png') no-repeat center center fixed;
+    background-size: 45%;
+    /* Adjust the size here */
+    background-position: center;
+    /* Center the background */
+
+}
+
+#leaves-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Make sure the container is not interactive */
+    overflow: hidden;
+    z-index: -1;
+    /* Ensure it stays in the background */
+}
+
+.leaf {
+    position: absolute;
+    bottom: 100%;
+    width: 50px;
+    height: 50px;
+    background-image: url('faviconleaf.ico');
+    /* Replace with your leaf image */
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+    }
+}
+
+h1.text-success {
+    text-align: left;
+    color: black;
+    /* Change the color to black */
+    font-weight: bold;
+    /* Make the text bold */
+}
+
+.btn-success {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.btn-success:hover {
+    background-color: #45a049;
+    border-color: #45a049;
 }

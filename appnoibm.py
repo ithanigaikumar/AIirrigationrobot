@@ -9,6 +9,8 @@ from unify import AsyncUnify
 import requests
 
 
+
+
 url_tts = 'https://api.au-syd.text-to-speech.watson.cloud.ibm.com/instances/ff1632e5-41e3-4736-9b2c-267fd9bce21f'
 apikey_tts = 'ksGCq8JMSF_fPrDdo3cLzu2xLvhC84bEFOuaecMA-2i_'
 
@@ -80,80 +82,59 @@ def handle_user_input(user_input, api_key, endpoint):
 
 def main():
     st.markdown('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">', unsafe_allow_html=True)
+    if float(sunlight_level) ==-1:
+        print(sunlight_level)
+        st.sidebar.markdown(
+            "### Play the audio to hear updates about your plants")
+        with open(audiosunlight_filepath, 'rb') as audio_file:
+            audio_bytes_sun = audio_file.read()
+            st.sidebar.audio(audio_bytes_sun, format='audio/mp3')
+            audio_played = True
 
-    st.sidebar.title("Configuration")
-    unify_key = st.sidebar.text_input("Enter your UNIFY_KEY", type='password')
-    audio_played = False
+    if float(moisture_level) ==-1:
+        print(moisture_level)
+        st.sidebar.markdown(
+            "### Play the audio to hear updates about your plants")
+        with open(audiomoisture_filepath, 'rb') as audio_file:
+            audio_bytes_moisture = audio_file.read()
+            st.sidebar.audio(audio_bytes_moisture, format='audio/mp3')
+            audio_played = True
 
-    if unify_key:
-        st.session_state.unify_key = unify_key
+    if audio_played:
 
-    if 'unify_key' in st.session_state:
-        model_list = [
-            "mixtral-8x7b-instruct-v0.1", "llama-2-70b-chat", "llama-2-13b-chat",
-            "mistral-7b-instruct-v0.2", "llama-2-7b-chat", "codellama-34b-instruct",
-            "gemma-7b-it", "mistral-7b-instruct-v0.1", "mixtral-8x22b-instruct-v0.1",
-            "codellama-13b-instruct", "codellama-7b-instruct", "yi-34b-chat",
-            "llama-3-8b-chat", "llama-3-70b-chat", "pplx-7b-chat", "mistral-medium",
-            "gpt-4", "pplx-70b-chat", "gpt-3.5-turbo", "deepseek-coder-33b-instruct",
-            "gemma-2b-it", "gpt-4-turbo", "mistral-small", "mistral-large",
-            "claude-3-haiku", "claude-3-opus", "claude-3-sonnet"
-        ]
-        selected_model = st.sidebar.selectbox("Choose a model", model_list)
-        
-        if float(sunlight_level) ==-1:
-            print(sunlight_level)
-            st.sidebar.markdown(
-                "### Play the audio to hear updates about your plants")
-            with open(audiosunlight_filepath, 'rb') as audio_file:
-                audio_bytes_sun = audio_file.read()
-                st.sidebar.audio(audio_bytes_sun, format='audio/mp3')
-                audio_played = True
+        st.title("🌱🤖 AI Irrigation Chatbot 🌻🌿")
 
-        if float(moisture_level) ==-1:
-            print(moisture_level)
-            st.sidebar.markdown(
-                "### Play the audio to hear updates about your plants")
-            with open(audiomoisture_filepath, 'rb') as audio_file:
-                audio_bytes_moisture = audio_file.read()
-                st.sidebar.audio(audio_bytes_moisture, format='audio/mp3')
-                audio_played = True
+        if 'chat_history' not in st.session_state:
+            st.session_state.chat_history = []
 
-        if audio_played:
+        # Display existing chat messages
+        messages_container = st.container()
+        for msg_type, msg_content in st.session_state.chat_history:
+            if msg_type == "user":
+                messages_container.chat_message("user").write(msg_content)
+            elif msg_type == "assistant":
+                messages_container.chat_message(
+                    "assistant").write(msg_content)
 
-            st.title("🌱🤖 AI Irrigation Chatbot 🌻🌿")
+        # Chat input at the bottom of the page
+        user_input = st.chat_input(
+            "Ask for any updates on PH/Sunlight/Moisture/Temperature/Happiness of your plant", key="chat_input")
 
-            if 'chat_history' not in st.session_state:
-                st.session_state.chat_history = []
+        # Display the audio player widget
 
-            # Display existing chat messages
-            messages_container = st.container()
-            for msg_type, msg_content in st.session_state.chat_history:
-                if msg_type == "user":
-                    messages_container.chat_message("user").write(msg_content)
-                elif msg_type == "assistant":
-                    messages_container.chat_message(
-                        "assistant").write(msg_content)
+        if user_input:
 
-            # Chat input at the bottom of the page
-            user_input = st.chat_input(
-                "Ask for any updates on PH/Sunlight/Moisture/Temperature/Happiness of your plant", key="chat_input")
+            with ThreadPoolExecutor() as executor:
+                future = executor.submit(
+                    handle_user_input, user_input, st.session_state.unify_key, selected_model)
+                response = future.result()
+                st.session_state.chat_history.append(("user", user_input))
+                st.session_state.chat_history.append(
+                    ("assistant", response))
+                st.rerun()
 
-            # Display the audio player widget
-
-            if user_input:
-
-                with ThreadPoolExecutor() as executor:
-                    future = executor.submit(
-                        handle_user_input, user_input, st.session_state.unify_key, selected_model)
-                    response = future.result()
-                    st.session_state.chat_history.append(("user", user_input))
-                    st.session_state.chat_history.append(
-                        ("assistant", response))
-                    st.rerun()
-
-            else:
-                st.error("Please enter valid keys to start chatting.")
+        else:
+            st.error("Please enter valid keys to start chatting.")
 
 # graph in
 if __name__ == "__main__":
