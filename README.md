@@ -17,9 +17,7 @@ To set up the project, follow these steps:
 
 2. **Install the required libraries:**
     ```bash
-    pip install streamlit
-    pip install ibm-watson
-    pip install unifyai
+    pip install -r requirements.txt
 
 3. **Run the application:**
     ```bash
