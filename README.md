@@ -19,8 +19,13 @@ To set up the project, follow these steps:
     ```bash
     pip install -r requirements.txt
 
-3. **Run the application:**
+3. **Install docker and make sure it is running**
+
+4. **Run the application:**
     ```bash
-    streamlit run appnoibm.py
+    docker build -t ai-irrigation-chatbot . 
+    docker run -p 8080:80 ai-irrigation-chatbot
 
 
+5. **Navigate to http://localhost:8080/**
+   Hover near the right-hand bottom corner for the chatbot, and type in update to get update. 

@@ -2,6 +2,10 @@
 let moistureAudioReady = false;
 let sunlightAudioReady = false;
 
+// Queue to handle sequential audio playback
+let audioQueue = [];
+let isPlaying = false;
+
 function checkPlantStatus() {
     fetch("https://irrigation.ajanthank.com/devices/0/status")
         .then(response => response.json())
@@ -9,42 +13,50 @@ function checkPlantStatus() {
             const moistureStatus = data.moisture.status;
             const sunlightStatus = data.light.status;
 
+            // Clear any existing audioQueue to avoid duplications
+            audioQueue = [];
+            isPlaying = false;
+
             if (moistureStatus === -1) {
-                synthesizeAndPrepare('moistureAudio', 'Your plant has dropped below moisture levels and is too dry, please water it!', () => {
-                    moistureAudioReady = true;
-                    playAudioIfReady();
-                });
+                queueAudio('moistureAudio');
             } else {
                 moistureAudioReady = true;
-                playAudioIfReady();
             }
 
             if (sunlightStatus === -1) {
-                synthesizeAndPrepare('sunlightAudio', 'Your plant has not absorbed enough sunlight for today please move it into the sunlight!', () => {
-                    sunlightAudioReady = true;
-                    playAudioIfReady();
-                });
+                queueAudio('sunlightAudio');
             } else {
                 sunlightAudioReady = true;
-                playAudioIfReady();
             }
+
+            playAudioIfReady();
         })
         .catch(error => console.error('Error:', error));
 }
 
-function synthesizeAndPrepare(audioId, message, callback) {
-    console.log(`Synthesizing and preparing audio: ${audioId}, message: ${message}`);
-    const utterance = new SpeechSynthesisUtterance(message);
-    utterance.onend = () => {
+function queueAudio(audioId) {
+    audioQueue.push(audioId);
+}
+
+function playAudio(audioId, callback) {
+    const audioElement = document.getElementById(audioId);
+    audioElement.onended = () => {
         callback();
     };
-    speechSynthesis.speak(utterance);
+    audioElement.play().catch(error => {
+        console.error(`Error playing ${audioId}:`, error);
+        callback();  // Ensure callback is called even if there is an error
+    });
 }
 
 function playAudioIfReady() {
-    if (moistureAudioReady && sunlightAudioReady) {
-        console.log("Both audio messages are ready to play.");
-        // Additional logic to handle simultaneous audio playback if needed
+    if (!isPlaying && audioQueue.length > 0) {
+        isPlaying = true;
+        const nextAudio = audioQueue.shift();
+        playAudio(nextAudio, () => {
+            isPlaying = false;
+            playAudioIfReady();
+        });
     }
 }
 
@@ -60,7 +72,10 @@ document.addEventListener("DOMContentLoaded", function () {
         leaf.style.opacity = `${Math.random()}`; // Random opacity
         leavesContainer.appendChild(leaf);
     }
+
+    // Attach event listener to the button to ensure user interaction before playing audio
+    document.querySelector('.btn-success').addEventListener('click', checkPlantStatus);
 });
 
-// Test the function
-checkPlantStatus();
+// Ensure the function is globally available
+window.checkPlantStatus = checkPlantStatus;
