@@ -10,17 +10,70 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon"> <!-- Add this line -->
 </head>
 
-<body class="bg-light">
-    <div id="leaves-container"></div>
-    <div class="container">
-        <h1 class="my-4 text-success">Welcome to the AI Irrigation Chatbot</h1>
-        <div id="chatContainer" class="card shadow-sm p-4 text-center">
+<body>
+    <h1>Irrigation Bot</h1>
+   
+
+    <!-- <script id="canvas map" src="sketch.js"></script>
+    <script src="OpenSimplexNoise.js"></script> -->
+    <!-- <img src="frame0.jpg" id="videoElement"><img> -->
+    <!-- <iframe src="http://192.168.43.1:4747/video" id="videoElement" ></iframe> -->
+
+
+
+    <div class="statuses">
+        <div class="status scan-bar acrylic">
+            <div class="title " style="margin-bottom:0.25em;">Controls</div>
+            <button class ="btn btn-success" onclick="update()">START</button>
+            <hr>
+            <button class ="btn btn-success" onclick="update()">RESET</button>
+            <hr> <div class="container">
+       
             <audio id="moistureAudio" src="moisture_speech.mp3"></audio>
             <audio id="sunlightAudio" src="sunlight_speech.mp3"></audio>
-            <img src="avatar-speaking.png" alt="Speaking Avatar" id="speakingAvatar" class="rounded-circle my-3">
-            <button class="btn btn-success" onclick="checkPlantStatus()">Check Plant Status</button>
+            <button class="btn btn-success" onclick="checkPlantStatus()">UPDATES</button>
+        </div>
+        </div>
+      
+        <div class="status acrylic mag-ult ">
+            <div class="info-col-sig">
+                <div class="centered">
+                    <div class="info-title"> Moisture 💧</div>
+                    <div class="info-num" id="magState">0</div>
+                    <div class="info-units"> % </div>
+                </div>
+            </div>
+            <hr>
+            <div class="info-col-sig">
+                <div class="centered">
+                    <div class="info-title"> Temperature 🌡️</div>
+                    <div class="info-num" id="usState">0</div>
+                    <div class="info-units"> Degrees </div>
+                </div>
+
+            </div>
+        </div>
+          <div class="status acrylic mag-ult ">
+            <div class="info-col-sig">
+                <div class="centered">
+                    <div class="info-title"> Moisture 💧</div>
+                    <div class="info-num" id="magState">0</div>
+                    <div class="info-units"> % </div>
+                </div>
+            </div>
+            <hr>
+            <div class="info-col-sig">
+                <div class="centered">
+                    <div class="info-title"> Temperature 🌡️</div>
+                    <div class="info-num" id="usState">0</div>
+                    <div class="info-units"> Degrees </div>
+                </div>
+
+            </div>
         </div>
     </div>
+  
+</body>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

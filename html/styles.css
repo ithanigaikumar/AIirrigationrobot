@@ -1,15 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+
 body,
 html {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: "IBM Plex Sans", sans-serif;
 }
 
+
+
+.status .title {
+ 
+    padding: 0.1rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.centered{
+    position: relative;
+    top: 20%;
+    
+}
+.info-col-sig{
+    height: 50%;
+    object-fit: fill;
+
+}
+.info-title{
+    font-weight: 600;
+    font-size: 1.25rem;
+    padding: 0;
+    height: min-content;
+}
+.info-num{
+    
+    font-size: 2rem;
+    font-weight:900;
+    margin: 1rem 1rem;
+}
+
+.controls {
+
+    position: fixed;
+    bottom:0;
+    width: 100%;
+    align-content: center;
+}
+
+.statuses {
+    display: flex;
+    
+    /*justify-content: space-between;*/
+    height: 50vh;
+    width: 100%;
+}
+
+.status {
+    margin:1em;
+    text-align: center;
+    width: auto;
+    height: 45vh;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    padding: 1rem;
+    box-shadow: 5px 5px 10px rgb(147, 147, 147 ,0.1);
+
+}
+
+.left{
+    float: left;
+
+}
+.right{
+    float: right;
+    
+}
 #chatContainer {
     width: 80%;
     max-width: 400px;
     padding: 20px;
+    top: 50%;
+    left: 50%;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
