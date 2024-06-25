@@ -12,9 +12,9 @@ html {
 
 
 .status .title {
- 
+    
     padding: 0.1rem;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 1.25rem;
 }
 
@@ -51,7 +51,7 @@ html {
 
 .statuses {
     display: flex;
-    
+    height: fit-content;
     /*justify-content: space-between;*/
     height: 50vh;
     width: 100%;
@@ -61,7 +61,7 @@ html {
     margin:1em;
     text-align: center;
     width: auto;
-    height: 45vh;
+    height: fit-content;
     border-radius: 0.5rem;
     background-color: #ffffff;
     padding: 1rem;
@@ -146,20 +146,22 @@ body.bg-light {
     }
 }
 
-h1.text-success {
-    text-align: left;
-    color: black;
-    /* Change the color to black */
-    font-weight: bold;
-    /* Make the text bold */
+
+button, .button:focus{
+    background-color: #fff;
+    
+    border: 1px solid black;
+    border-radius: 3rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0.5rem;
+
 }
 
-.btn-success {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
-}
 
-.btn-success:hover {
-    background-color: #45a049;
-    border-color: #45a049;
+button:hover, .button:focus:hover {
+    color:#a2a2a2;
+    background-color: #dedede;
+    border: 1px solid rgb(255, 255, 255);
 }

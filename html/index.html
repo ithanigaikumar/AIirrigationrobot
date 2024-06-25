@@ -11,8 +11,8 @@
 </head>
 
 <body>
-    <h1>Irrigation Bot</h1>
-   
+    <h1> Interface</h1>
+
 
     <!-- <script id="canvas map" src="sketch.js"></script>
     <script src="OpenSimplexNoise.js"></script> -->
@@ -23,75 +23,102 @@
 
     <div class="statuses">
         <div class="status scan-bar acrylic">
-            <div class="title " style="margin-bottom:0.25em;">Controls</div>
-            <button class ="btn btn-success" onclick="update()">START</button>
+            <div class="title " style="margin-bottom:0.25em;"> Press the buttons <br> to control the robot!</div>
             <hr>
-            <button class ="btn btn-success" onclick="update()">RESET</button>
-            <hr> <div class="container">
-       
-            <audio id="moistureAudio" src="moisture_speech.mp3"></audio>
-            <audio id="sunlightAudio" src="sunlight_speech.mp3"></audio>
-            <button class="btn btn-success" onclick="checkPlantStatus()">UPDATES</button>
+            <button class="butt " onclick="forward()">Move forward</button>
+            <hr>
+            <button class="butt " onclick="right()">Turn Right</button>
+            <hr>
+            <div class="container">
+
+                <audio id="moistureAudio" src="moisture_speech.mp3"></audio>
+                <audio id="sunlightAudio" src="sunlight_speech.mp3"></audio>
+                <button class="butt" onclick="checkPlantStatus()">Check Updates</button>
+            </div>
         </div>
-        </div>
-      
+
         <div class="status acrylic mag-ult ">
             <div class="info-col-sig">
                 <div class="centered">
-                    <div class="info-title"> Moisture 💧</div>
-                    <div class="info-num" id="magState">0</div>
-                    <div class="info-units"> % </div>
+                    <div class="info-title"> Soil Moisture 💧</div>
+                    <div class="info-num" id="moisture">0</div>
+                    <div class="info-units">%</div>
                 </div>
             </div>
             <hr>
             <div class="info-col-sig">
                 <div class="centered">
                     <div class="info-title"> Temperature 🌡️</div>
-                    <div class="info-num" id="usState">0</div>
-                    <div class="info-units"> Degrees </div>
+                    <div class="info-num" id="temp">0</div>
+                    <div class="info-units"> C</div>
                 </div>
 
             </div>
         </div>
-          <div class="status acrylic mag-ult ">
-            <div class="info-col-sig">
-                <div class="centered">
-                    <div class="info-title"> Moisture 💧</div>
-                    <div class="info-num" id="magState">0</div>
-                    <div class="info-units"> % </div>
-                </div>
-            </div>
-            <hr>
-            <div class="info-col-sig">
-                <div class="centered">
-                    <div class="info-title"> Temperature 🌡️</div>
-                    <div class="info-num" id="usState">0</div>
-                    <div class="info-units"> Degrees </div>
-                </div>
-
-            </div>
-        </div>
+        
+       
     </div>
-  
+
 </body>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="scripts.js"></script> <!-- Ensure this path is correct -->
-    <script>
-        window.watsonAssistantChatOptions = {
-            integrationID: "fc782640-6d4f-442e-9cdf-b79a99a72ca6",
-            region: "eu-gb",
-            serviceInstanceID: "d6d2737e-ab10-4938-8138-2ca6fdc53c13",
-            onLoad: async (instance) => { await instance.render(); }
-        };
-        setTimeout(function () {
-            const t = document.createElement('script');
-            t.src = "https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
-            document.head.appendChild(t);
-        });
-    </script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="scripts.js"></script> <!-- Ensure this path is correct -->
+<script>
+ async function forward() {
+    
+        try {
+            const response = await fetch(
+            'https://irrigation.ajanthank.com/devices/commands/0?command=man-f-1000', {
+                method: 'POST'
+            });
+            console.log('Completed!', response);
+        } catch (err) {
+            console.error(`Error: ${err}`);
+        }
+    };
+ async function right() {
+    
+        try {
+            const response = await fetch(
+            'https://irrigation.ajanthank.com/devices/commands/0?command=man-r-500', {
+                method: 'POST'
+            });
+            console.log('Completed!', response);
+        } catch (err) {
+            console.error(`Error: ${err}`);
+        }
+    };
+
+function checkPlantRaw() {
+    fetch("https://irrigation.ajanthank.com/devices/0/status")
+        .then(response => response.json())
+        .then(data => {
+            var moistureStat= data.moisture.raw;
+            var tempStat = data.temperature.raw;
+            console.log(moistureStat);
+            console.log(tempStat);
+            document.getElementById("temp").innerHTML = tempStat;
+            document.getElementById("moisture").innerHTML = moistureStat;
+        })
+    
+}
+
+     window.watsonAssistantChatOptions = {
+    integrationID: "40a6e8fa-e827-4b45-8ceb-7d382373e314", // The ID of this integration.
+    region: "eu-gb", // The region your integration is hosted in.
+    serviceInstanceID: "d6d2737e-ab10-4938-8138-2ca6fdc53c13", // The ID of your service instance.
+    onLoad: async (instance) => { await instance.render(); }
+  };
+  setTimeout(function(){
+    const t=document.createElement('script');
+    t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+    document.head.appendChild(t);
+  });
+
+   
+</script>
 </body>
 
 </html>

@@ -6,6 +6,20 @@ let sunlightAudioReady = false;
 let audioQueue = [];
 let isPlaying = false;
 
+function checkPlantRaw() {
+    fetch("https://irrigation.ajanthank.com/devices/0/status")
+        .then(response => response.json())
+        .then(data => {
+            var moistureStat= data.moisture.raw;
+            var tempStat = data.temperature.raw;
+            console.log(moistureStat);
+            console.log(tempStat);
+            document.getElementById("temp").innerHTML = tempStat;
+            document.getElementById("moisture").innerHTML = moistureStat;
+        })
+    
+}
+
 function checkPlantStatus() {
     fetch("https://irrigation.ajanthank.com/devices/0/status")
         .then(response => response.json())
@@ -30,6 +44,7 @@ function checkPlantStatus() {
             }
 
             playAudioIfReady();
+            checkPlantRaw();
         })
         .catch(error => console.error('Error:', error));
 }
