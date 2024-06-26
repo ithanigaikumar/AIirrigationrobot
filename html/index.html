@@ -29,11 +29,23 @@
             <hr>
             <button class="butt " onclick="right()">Turn Right</button>
             <hr>
-           
+
             <div class="container">
 
                 <audio id="moistureAudio" src="moisture_speech.mp3"></audio>
                 <audio id="sunlightAudio" src="sunlight_speech.mp3"></audio>
+                <audio id="moistureOptimalAudio" src="optimal_moisture.mp3"></audio>
+                <audio id="sunlightOptimalAudio" src="optimal-light.mp3"></audio>
+                <audio id="moistureHigh" src="too_wet_moisture.mp3"></audio>
+                <audio id="temperatureCold" src="temperature-cold.mp3"></audio>
+                <audio id="temperatureOptimal" src="optimal-temperature.mp3"></audio>
+                <audio id="temperatureHigh" src="temperature_toohot.mp3"></audio>
+                <audio id="humidityLow" src="humidity-dry.mp3"></audio>
+                <audio id="humidityOptimal" src="optimal-humidity.mp3"></audio>
+                <audio id="humidityHigh" src="humidity-toohumid.mp3"></audio>
+
+
+
                 <button class="butt" onclick="checkPlantStatus()">Check Updates</button>
             </div>
         </div>
@@ -56,7 +68,7 @@
 
             </div>
             <hr>
-              <div class="info-col-sig">
+            <div class="info-col-sig">
                 <div class="centered">
                     <div class="info-title"> Light ☀️</div>
                     <div class="info-num" id="temp">0</div>
@@ -65,8 +77,8 @@
 
             </div>
         </div>
-        
-       
+
+
     </div>
 
 </body>
@@ -76,11 +88,11 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="scripts.js"></script> <!-- Ensure this path is correct -->
 <script>
- async function forward() {
-    
+    async function forward() {
+
         try {
             const response = await fetch(
-            'https://irrigation.ajanthank.com/devices/commands/0?command=man-f-1000', {
+                'https://irrigation.ajanthank.com/devices/commands/0?command=man-f-1000', {
                 method: 'POST'
             });
             console.log('Completed!', response);
@@ -88,11 +100,11 @@
             console.error(`Error: ${err}`);
         }
     };
- async function right() {
-    
+    async function right() {
+
         try {
             const response = await fetch(
-            'https://irrigation.ajanthank.com/devices/commands/0?command=man-r-500', {
+                'https://irrigation.ajanthank.com/devices/commands/0?command=man-r-500', {
                 method: 'POST'
             });
             console.log('Completed!', response);
@@ -101,36 +113,36 @@
         }
     };
 
-function checkPlantRaw() {
-    fetch("https://irrigation.ajanthank.com/devices/0/status")
-        .then(response => response.json())
-        .then(data => {
-            var moistureStat= data.moisture.raw;
-            var tempStat = data.temperature.raw;
-            var lightStat = data.light.raw;
-            console.log(moistureStat);
-            console.log(tempStat);
-            console.log(lightStat);
-            document.getElementById("temp").innerHTML = tempStat;
-            document.getElementById("moisture").innerHTML = moistureStat;
-              document.getElementById("light").innerHTML = lightStat;
-        })
-    
-}
+    function checkPlantRaw() {
+        fetch("https://irrigation.ajanthank.com/devices/0/status")
+            .then(response => response.json())
+            .then(data => {
+                var moistureStat = data.moisture.raw;
+                var tempStat = data.temperature.raw;
+                var lightStat = data.light.raw;
+                console.log(moistureStat);
+                console.log(tempStat);
+                console.log(lightStat);
+                document.getElementById("temp").innerHTML = tempStat;
+                document.getElementById("moisture").innerHTML = moistureStat;
+                document.getElementById("light").innerHTML = lightStat;
+            })
 
-     window.watsonAssistantChatOptions = {
-    integrationID: "40a6e8fa-e827-4b45-8ceb-7d382373e314", // The ID of this integration.
-    region: "eu-gb", // The region your integration is hosted in.
-    serviceInstanceID: "d6d2737e-ab10-4938-8138-2ca6fdc53c13", // The ID of your service instance.
-    onLoad: async (instance) => { await instance.render(); }
-  };
-  setTimeout(function(){
-    const t=document.createElement('script');
-    t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
-    document.head.appendChild(t);
-  });
+    }
 
-   
+    window.watsonAssistantChatOptions = {
+        integrationID: "40a6e8fa-e827-4b45-8ceb-7d382373e314", // The ID of this integration.
+        region: "eu-gb", // The region your integration is hosted in.
+        serviceInstanceID: "d6d2737e-ab10-4938-8138-2ca6fdc53c13", // The ID of your service instance.
+        onLoad: async (instance) => { await instance.render(); }
+    };
+    setTimeout(function () {
+        const t = document.createElement('script');
+        t.src = "https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+        document.head.appendChild(t);
+    });
+
+
 </script>
 </body>
 
