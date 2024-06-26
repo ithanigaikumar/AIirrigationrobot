@@ -10,7 +10,9 @@ html {
 }
 
 
-
+h1{
+    margin: 1em;
+}
 .status .title {
     
     padding: 0.1rem;
