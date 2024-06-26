@@ -29,6 +29,7 @@
             <hr>
             <button class="butt " onclick="right()">Turn Right</button>
             <hr>
+           
             <div class="container">
 
                 <audio id="moistureAudio" src="moisture_speech.mp3"></audio>
@@ -51,6 +52,15 @@
                     <div class="info-title"> Temperature 🌡️</div>
                     <div class="info-num" id="temp">0</div>
                     <div class="info-units"> C</div>
+                </div>
+
+            </div>
+            <hr>
+              <div class="info-col-sig">
+                <div class="centered">
+                    <div class="info-title"> Light ☀️</div>
+                    <div class="info-num" id="temp">0</div>
+                    <div class="info-units"> %</div>
                 </div>
 
             </div>
@@ -97,10 +107,13 @@ function checkPlantRaw() {
         .then(data => {
             var moistureStat= data.moisture.raw;
             var tempStat = data.temperature.raw;
+            var lightStat = data.light.raw;
             console.log(moistureStat);
             console.log(tempStat);
+            console.log(lightStat);
             document.getElementById("temp").innerHTML = tempStat;
             document.getElementById("moisture").innerHTML = moistureStat;
+              document.getElementById("light").innerHTML = lightStat;
         })
     
 }
