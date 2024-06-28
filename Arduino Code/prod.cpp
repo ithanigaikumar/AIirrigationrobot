@@ -14,6 +14,7 @@ constexpr int BIN2 = 12;
 constexpr int PWMB = 13;
 constexpr int DHTPIN = 14;
 constexpr int SOIL_MOISTURE_PIN = 32;
+constexpr int BH1750address = 0x23;
 
 // Sensor Constants
 constexpr int SOIL_SENSOR_MIN = 3000;
@@ -32,10 +33,21 @@ const char* MQTT_PASSWORD = "ImperialIrrigation";
 constexpr unsigned long MQTT_INTERVAL = 200;
 constexpr unsigned long SENSOR_INTERVAL = 5000;
 
+// Movement Constants (to be calibrated)
+constexpr int MOVE_UNIT = 1000; // milliseconds for one unit of movement
+constexpr int TURN_90_DEGREES = 1000; // milliseconds for a 90-degree turn
+
 // Global Variables
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
 DHT dhtSensor(DHTPIN, DHT_TYPE);
+
+byte lightBuffer[2]; 
+
+// Current position and orientation
+int currentX = 0;
+int currentY = 0;
+int currentOrientation = 0; // 0: North, 1: East, 2: South, 3: West
 
 // Function Prototypes
 void setupWiFi();
@@ -44,9 +56,14 @@ void setupSensors();
 void setupMotors();
 void reconnectMQTT();
 void handleMQTTMessage(char* topic, byte* payload, unsigned int length);
+void BH1750_Init(int address);
+int BH1750_Read(int address);
 void publishSensorData();
 void executeCommand(const String& command);
 void moveMotor(int direction, int duration);
+void moveToLocation(int locationId);
+void turnToOrientation(int targetOrientation);
+void moveForward(int units);
 
 void setup() {
   Serial.begin(115200);
@@ -79,7 +96,7 @@ void loop() {
 void setupWiFi() {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
+    delay(2000);
     Serial.println("Connecting to WiFi...");
   }
   Serial.println("Connected to WiFi");
@@ -119,14 +136,39 @@ void reconnectMQTT() {
   }
 }
 
+
 void handleMQTTMessage(char* topic, byte* payload, unsigned int length) {
   String message(reinterpret_cast<char*>(payload), length);
   Serial.println("Message arrived: " + message);
 
   if (message.startsWith("man-")) {
     executeCommand(message);
+  } else if (message.startsWith("mov-")) {
+    int locationId = message.substring(4).toInt();
+    moveToLocation(locationId);
   }
 }
+
+// ------------------------------ Sensors --------------------------------- //
+
+int BH1750_Read(int address) {
+  int i = 0;
+  Wire.beginTransmission(address);
+  Wire.requestFrom(address, 2);
+  while (Wire.available()) {
+    lightBuffer[i] = Wire.read(); // receive one byte
+    i++;
+  }
+  Wire.endTransmission();
+  return i;
+}
+
+void BH1750_Init(int address) {
+  Wire.beginTransmission(address);
+  Wire.write(0x10); // 1lx resolution 120ms
+  Wire.endTransmission();
+}
+
 
 void publishSensorData() {
   float humidity = dhtSensor.readHumidity();
@@ -140,11 +182,19 @@ void publishSensorData() {
   int moistureRaw = analogRead(SOIL_MOISTURE_PIN);
   int moisturePercentage = map(moistureRaw, SOIL_SENSOR_MIN, SOIL_SENSOR_MAX, 0, 100);
 
-  StaticJsonDocument<200> doc;
+  BH1750_Init(BH1750address);
+  delay(200);
+
+  uint16_t lightLevel = 0;
+  if (2 == BH1750_Read(BH1750address)) {
+    lightLevel = ((lightBuffer[0] << 8) | lightBuffer[1]) / 1.2;
+  }
+
+  JsonDocument doc;
   doc["humidity"] = humidity;
   doc["temperature"] = temperature;
   doc["moisture"] = moisturePercentage;
-  doc["light"] = 50; // Placeholder value
+  doc["light"] = lightLevel; // Placeholder value
 
   String payload;
   serializeJson(doc, payload);
@@ -156,6 +206,7 @@ void publishSensorData() {
   }
 }
 
+// ------------------------------ Movement --------------------------------- //
 void executeCommand(const String& command) {
   char commandType = command.charAt(4);
   int duration = command.substring(6).toInt();
@@ -168,6 +219,15 @@ void executeCommand(const String& command) {
     case 's': moveMotor(0, duration); break;
     default: Serial.println("Invalid command"); break;
   }
+}
+
+void stopMotor() {
+  digitalWrite(AIN1, LOW);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, LOW);
+  analogWrite(PWMA, 0);
+  analogWrite(PWMB, 0);
 }
 
 void moveMotor(int direction, int duration) {
@@ -205,14 +265,70 @@ void moveMotor(int direction, int duration) {
       analogWrite(PWMB, 200);
       break;
     default: // Stop
-      digitalWrite(AIN1, LOW);
-      digitalWrite(AIN2, LOW);
-      digitalWrite(BIN1, LOW);
-      digitalWrite(BIN2, LOW);
-      analogWrite(PWMA, 0);
-      analogWrite(PWMB, 0);
+      stopMotor();
       break;
   }
   delay(duration);
-  moveMotor(0, 100); // Stop after movement
+  stopMotor(); // Stop after movement
+}
+
+void moveToLocation(int locationId) {
+  int targetX, targetY;
+  
+  switch (locationId) {
+    case 1: // Rain area
+      targetX = 1; targetY = 1;
+      break;
+    case 2: // Sunny area
+      targetX = 1; targetY = 0;
+      break;
+    case 3: // Shaded/humid area
+      targetX = 0; targetY = 1;
+      break;
+    case 4: // Home location
+      targetX = 0; targetY = 0;
+      break;
+    default:
+      Serial.println("Invalid location");
+      return;
+  }
+
+  // Move in Y direction
+  if (targetY > currentY) {
+    turnToOrientation(0); // Face North
+    moveForward(targetY - currentY);
+  } else if (targetY < currentY) {
+    turnToOrientation(2); // Face South
+    moveForward(currentY - targetY);
+  }
+
+  // Move in X direction
+  if (targetX > currentX) {
+    turnToOrientation(1); // Face East
+    moveForward(targetX - currentX);
+  } else if (targetX < currentX) {
+    turnToOrientation(3); // Face West
+    moveForward(currentX - targetX);
+  }
+
+  currentX = targetX;
+  currentY = targetY;
+
+  Serial.println("Moved to location " + String(locationId));
+}
+
+void turnToOrientation(int targetOrientation) {
+  int diff = (targetOrientation - currentOrientation + 4) % 4;
+  if (diff == 1) {
+    moveMotor(2, TURN_90_DEGREES); // Turn right
+  } else if (diff == 2) {
+    moveMotor(2, TURN_90_DEGREES * 2); // Turn 180 degrees
+  } else if (diff == 3) {
+    moveMotor(-2, TURN_90_DEGREES); // Turn left
+  }
+  currentOrientation = targetOrientation;
+}
+
+void moveForward(int units) {
+  moveMotor(1, MOVE_UNIT * units);
 }
