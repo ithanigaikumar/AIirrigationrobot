@@ -40,11 +40,11 @@ _INSTRUCTIONS: Below are the suggested sections to include in your README file t
 
 ### The issue we are hoping to solve
 
-REPLACE THIS SENTENCE with a short description, 2-3 sentences in length, of the specific sustainability problem your solution is meant to address.
+We aim to address the inefficient use of water in plant care and the challenge of providing optimal growing conditions for plants, which can lead to wasted resources and suboptimal plant health.
 
 ### How our technology solution can help
 
-REPLACE THIS SENTENCE with a short description of your team's solution, in about 10 words.
+Our solution autonomously relocates plants to optimal conditions, conserving water.
 
 ### Our idea
 
