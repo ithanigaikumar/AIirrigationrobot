@@ -68,9 +68,11 @@ _INSTRUCTIONS: Included here is a list of IBM watsonx products. Remove any produ
 - [watsonx Assistant](https://cloud.ibm.com/catalog/services/watsonx-assistant)
 - IBM Watson Assistant was integrated to create a more personalised and interactive user experience. It managed two main conversational streams:
 
-Plant Condition Updates: Delivered real-time information on temperature, moisture, humidity, and light levels, allowing users to monitor and respond to changes in the plant’s health.
-Weather Forecasts: Provided up-to-date meteorological data to help users plan for future environmental conditions that could affect their plants.
-The dialogues in these streams were structured using intuitive flowcharts, ensuring seamless and user-friendly interactions. Additionally, text-to-speech capabilities were incorporated to further enhance the user experience.WHERE AND HOW THIS IS USED IN OUR SOLUTION
+1. Plant Condition Updates: Delivered real-time information on temperature, moisture, humidity, and light levels, allowing users to monitor and respond to changes in the plant’s health.
+  
+2. Weather Forecasts: Provided up-to-date meteorological data to help users plan for future environmental conditions that could affect their plants.
+   
+The dialogues in these streams were structured using intuitive flowcharts, ensuring seamless and user-friendly interactions. Additionally, text-to-speech capabilities were incorporated to further enhance the user experience.
 
 ### Other IBM technology used
 
