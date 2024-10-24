@@ -1,44 +1,45 @@
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
+import requests
+import streamlit as st
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson import TextToSpeechV1
-from random import random
-from concurrent.futures import ThreadPoolExecutor
-import streamlit as st
-import asyncio
 from unify import AsyncUnify
-import requests
 
-
-
-
-url_tts = 'https://api.au-syd.text-to-speech.watson.cloud.ibm.com/instances/ff1632e5-41e3-4736-9b2c-267fd9bce21f'
-apikey_tts = 'ksGCq8JMSF_fPrDdo3cLzu2xLvhC84bEFOuaecMA-2i_'
+url_tts = ""
+apikey_tts = ""
 
 
 authenticator = IAMAuthenticator(apikey_tts)
 tts = TextToSpeechV1(authenticator=authenticator)
 tts.set_service_url(url_tts)
 
-response= requests.get("https://irrigation.ajanthank.com/devices/0/status")
-data=response.json()
+response = requests.get("https://api.url.com/devices/0/status")
+data = response.json()
 print(data)
 moisture_level = data["moisture"]["status"]
-sunlight_level=data["light"]["status"]
+sunlight_level = data["light"]["status"]
 
 
-
-with open('./moisture_speech.mp3', 'wb') as audio_file:
-    res = tts.synthesize('Your plant has dropped below moisture levels and is too dry, please water it!', accept='audio/mp3',
-                         voice='en-US_AllisonV3Voice').get_result()
+with open("./moisture_speech.mp3", "wb") as audio_file:
+    res = tts.synthesize(
+        "Your plant has dropped below moisture levels and is too dry, please water it!",
+        accept="audio/mp3",
+        voice="en-US_AllisonV3Voice",
+    ).get_result()
     audio_file.write(res.content)
 
 
-with open('./sunlight_speech.mp3', 'wb') as audio_file:
-    res = tts.synthesize('Your plant has not absorbed enough sunlight for today please move it into the sunlight!', accept='audio/mp3',
-                         voice='en-US_AllisonV3Voice').get_result()
+with open("./sunlight_speech.mp3", "wb") as audio_file:
+    res = tts.synthesize(
+        "Your plant has not absorbed enough sunlight for today please move it into the sunlight!",
+        accept="audio/mp3",
+        voice="en-US_AllisonV3Voice",
+    ).get_result()
     audio_file.write(res.content)
 
-audiomoisture_filepath = 'moisture_speech.mp3'
+audiomoisture_filepath = "moisture_speech.mp3"
 audiosunlight_filepath = "sunlight_speech.mp3"
 
 
@@ -46,7 +47,7 @@ audiosunlight_filepath = "sunlight_speech.mp3"
 
 
 async def get_bot_response(api_key, endpoint, user_input):
-    endpoint = endpoint+"@anyscale"
+    endpoint = endpoint + "@anyscale"
     unify = AsyncUnify(api_key=api_key, endpoint=endpoint)
     response = await unify.generate(user_prompt=user_input)
 
@@ -58,7 +59,8 @@ async def get_bot_response(api_key, endpoint, user_input):
         result = []
         async for chunk in response:
             result.append(chunk)
-        return ''.join(result)
+        return "".join(result)
+
 
 # Function to handle the asyncio loop and execute async calls
 
@@ -73,6 +75,7 @@ def run_async(api_key, endpoint, user_input):
     finally:
         loop.close()
 
+
 # Function to handle user input and get the response
 
 
@@ -81,30 +84,30 @@ def handle_user_input(user_input, api_key, endpoint):
 
 
 def main():
-    st.markdown('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">', unsafe_allow_html=True)
-    if float(sunlight_level) ==-1:
+    st.markdown(
+        '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">',
+        unsafe_allow_html=True,
+    )
+    if float(sunlight_level) == -1:
         print(sunlight_level)
-        st.sidebar.markdown(
-            "### Play the audio to hear updates about your plants")
-        with open(audiosunlight_filepath, 'rb') as audio_file:
+        st.sidebar.markdown("### Play the audio to hear updates about your plants")
+        with open(audiosunlight_filepath, "rb") as audio_file:
             audio_bytes_sun = audio_file.read()
-            st.sidebar.audio(audio_bytes_sun, format='audio/mp3')
+            st.sidebar.audio(audio_bytes_sun, format="audio/mp3")
             audio_played = True
 
-    if float(moisture_level) ==-1:
+    if float(moisture_level) == -1:
         print(moisture_level)
-        st.sidebar.markdown(
-            "### Play the audio to hear updates about your plants")
-        with open(audiomoisture_filepath, 'rb') as audio_file:
+        st.sidebar.markdown("### Play the audio to hear updates about your plants")
+        with open(audiomoisture_filepath, "rb") as audio_file:
             audio_bytes_moisture = audio_file.read()
-            st.sidebar.audio(audio_bytes_moisture, format='audio/mp3')
+            st.sidebar.audio(audio_bytes_moisture, format="audio/mp3")
             audio_played = True
 
     if audio_played:
-
         st.title("🌱🤖 AI Irrigation Chatbot 🌻🌿")
 
-        if 'chat_history' not in st.session_state:
+        if "chat_history" not in st.session_state:
             st.session_state.chat_history = []
 
         # Display existing chat messages
@@ -113,28 +116,32 @@ def main():
             if msg_type == "user":
                 messages_container.chat_message("user").write(msg_content)
             elif msg_type == "assistant":
-                messages_container.chat_message(
-                    "assistant").write(msg_content)
+                messages_container.chat_message("assistant").write(msg_content)
 
         # Chat input at the bottom of the page
         user_input = st.chat_input(
-            "Ask for any updates on PH/Sunlight/Moisture/Temperature/Happiness of your plant", key="chat_input")
+            "Ask for any updates on PH/Sunlight/Moisture/Temperature/Happiness of your plant",
+            key="chat_input",
+        )
 
         # Display the audio player widget
 
         if user_input:
-
             with ThreadPoolExecutor() as executor:
                 future = executor.submit(
-                    handle_user_input, user_input, st.session_state.unify_key, selected_model)
+                    handle_user_input,
+                    user_input,
+                    st.session_state.unify_key,
+                    selected_model,
+                )
                 response = future.result()
                 st.session_state.chat_history.append(("user", user_input))
-                st.session_state.chat_history.append(
-                    ("assistant", response))
+                st.session_state.chat_history.append(("assistant", response))
                 st.rerun()
 
         else:
             st.error("Please enter valid keys to start chatting.")
+
 
 # graph in
 if __name__ == "__main__":

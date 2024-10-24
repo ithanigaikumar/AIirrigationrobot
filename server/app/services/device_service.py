@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.config import settings
 from app.database import get_db_connection
@@ -7,6 +7,14 @@ from app.mqtt_client import MQTTClient
 
 
 class DeviceService:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(DeviceService, cls).__new__(cls)
+            cls._instance.mqtt_client = MQTTClient(cls._instance)
+            cls._instance.mqtt_client.connect(settings.MQTT_BROKER_URL, settings.MQTT_BROKER_PORT)
+        return cls._instance
 
     def __init__(self):
         self.mqtt_client = MQTTClient(self)
@@ -32,7 +40,7 @@ class DeviceService:
             VALUES (%s, %s, %s, %s, %s, %s)
         """
         cursor.execute(query, (
-            datetime.now(),
+            datetime.now(timezone.utc),
             device_id,
             data["light"],
             data["temperature"],
@@ -55,14 +63,12 @@ class DeviceService:
 
         sensor_data = {
             "time": result[0],
-            "light": result[1],
-            "temperature": result[2],
-            "moisture": result[3],
-            "humidity": result[4]
+            "light": result[2],
+            "temperature": result[3],
+            "moisture": result[4],
+            "humidity": result[5]
         }
         return sensor_data
 
     def send_command(self, device_id: str, command: str):
-        # Placeholder to send a command to a device via MQTT
         self.mqtt_client.publish(f"{settings.MQTT_COMMAND_TOPIC}/{device_id}", command)
-        pass

@@ -12,6 +12,7 @@ class MQTTClient:
         self.client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2)
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
+        self.client.username_pw_set(settings.MQTT_USERNAME, settings.MQTT_PASSWORD)
 
     def connect(self, broker_url, broker_port):
         self.client.connect(broker_url, broker_port)

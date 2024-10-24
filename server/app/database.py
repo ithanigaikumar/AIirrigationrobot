@@ -1,4 +1,5 @@
 import psycopg2
+
 from app.config import settings
 
 
@@ -43,7 +44,7 @@ def create_tables():
     # Create sensor_data hypertable
     query_create_sensordata_table = """
         CREATE TABLE IF NOT EXISTS sensor_data (
-            time TIMESTAMPTZ NOT NULL,
+            recorded_at TIMESTAMPTZ NOT NULL,
             device_id VARCHAR(255) NOT NULL,
             light REAL NOT NULL,
             temperature REAL NOT NULL,
@@ -57,13 +58,28 @@ def create_tables():
     # Create weather_forecast table 
     query_create_weatherforecast_table = """
         CREATE TABLE IF NOT EXISTS weather_forecast (
-            time TIMESTAMPTZ NOT NULL,
+            forecast_at TIMESTAMPTZ PRIMARY KEY,
             temperature REAL NOT NULL,
             humidity REAL NOT NULL,
-            precipitation REAL NOT NULL
+            precipitation REAL NOT NULL,
+            cloud_cover REAL NOT NULL
         );
     """
     cursor.execute(query_create_weatherforecast_table)
+
+    # Create daily forecast table
+    query_create_dailyforecast_table = """
+        CREATE TABLE IF NOT EXISTS daily_forecast (
+            forecast_date TIMESTAMPTZ PRIMARY KEY,
+            min_temp REAL NOT NULL,
+            max_temp REAL NOT NULL,
+            average_humidity REAL NOT NULL,
+            total_precipitation REAL NOT NULL,
+            sunrise_time TIMESTAMPTZ NOT NULL,
+            sunset_time TIMESTAMPTZ NOT NULL
+        );
+    """
+    cursor.execute(query_create_dailyforecast_table)
 
     conn.commit()
     cursor.close()

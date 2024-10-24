@@ -8,7 +8,7 @@ let audioQueue = [];
 let isPlaying = false;
 
 function checkPlantRaw() {
-    fetch("https://irrigation.ajanthank.com/devices/0/status")
+    fetch("https://api.domain.com/devices/0/status")
         .then(response => response.json())
         .then(data => {
             var moistureStat = data.moisture.raw;
@@ -22,7 +22,7 @@ function checkPlantRaw() {
 }
 
 function checkPlantStatus() {
-    fetch("https://irrigation.ajanthank.com/devices/0/status")
+    fetch("https://api.domain.com/devices/0/status")
         .then(response => response.json())
         .then(data => {
             const moistureStatus = data.moisture.status;

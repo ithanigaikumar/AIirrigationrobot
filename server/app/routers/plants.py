@@ -8,14 +8,8 @@ router = APIRouter(prefix="/plants", tags=["plants"])
 
 # Placeholder: manually create plant with known data
 @router.post("/")
-def create_plant(plant: schemas.PlantCreate):
-    PlantService.create_plant(
-        plant_id=plant.plant_id,
-        name=plant.name,
-        light=plant.light,
-        temperature=plant.temperature,
-        moisture=plant.moisture
-    )
+def create_plant(plant: schemas.Plant):
+    PlantService.create_plant(plant)
     return {"message": "Plant created successfully"}
 
 
@@ -23,3 +17,4 @@ def create_plant(plant: schemas.PlantCreate):
 def delete_plant(plant_id: str):
     PlantService.delete_plant(plant_id=plant_id)
     return {"message": "Plant deleted successfully"}
+

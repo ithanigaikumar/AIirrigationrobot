@@ -6,8 +6,10 @@ class Settings(BaseSettings):
 
     MQTT_BROKER_URL: str
     MQTT_BROKER_PORT: int
-    MQTT_SENSOR_TOPIC: str = "sensors"
-    MQTT_COMMAND_TOPIC: str = "commands"
+    MQTT_USERNAME: str
+    MQTT_PASSWORD: str
+    MQTT_SENSOR_TOPIC: str = "/sensors"
+    MQTT_COMMAND_TOPIC: str = "/commands"
 
     DB_HOST: str
     DB_PORT: int

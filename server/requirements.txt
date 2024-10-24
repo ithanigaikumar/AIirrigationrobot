@@ -1,0 +1,6 @@
+fastapi==0.111.0
+paho_mqtt==2.1.0
+psycopg2==2.9.9
+pydantic==2.7.1
+pydantic_settings==2.2.1
+Requests==2.31.0
