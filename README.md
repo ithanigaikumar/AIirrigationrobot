@@ -118,18 +118,14 @@ _INSTRUCTIONS: The following deliverables should be officially posted to your My
 
 ### Project development roadmap
 
-The project currently does the following things.
-
-- Feature 1
-- Feature 2
-- Feature 3
-
-In the future we plan to... next steps
+The robot currently autonomously relocates itself to look after a plant while ensuring it moves to the desired areas; water, sunlight, shade, while taking in updates from the weather app and the sensor data. The chatbot uses the text-to-speech feature for easy communication with the robot. 
 
 See below for our timeline of the project development before the Call for Code 2024 submission.
 
 ![Timeline April-May](timeline_1.jpg)
 ![Timeline May-June](timeline_2.jpg)
+
+In the future the project could be developed further to upscale our robot for agricultural uses.
 
 ## Additional details
 
