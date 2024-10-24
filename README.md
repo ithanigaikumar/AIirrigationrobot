@@ -113,8 +113,10 @@ Diagram and step-by-step description of the flow of our solution:
 _INSTRUCTIONS: The following deliverables should be officially posted to your My Team > Submissions section of the [Call for Code Global Challenge resources site](https://cfc-prod.skillsnetwork.site/), but you can also include them here for completeness. Replace the examples seen here with your own deliverable links._
 
 ### Solution demo video
+[![Click](https://img.youtube.com/vi/e40uuCl1DfM/0.jpg)](https://www.youtube.com/watch?v=e40uuCl1DfM)
 
-[![Watch the video](https://raw.githubusercontent.com/Liquid-Prep/Liquid-Prep/main/images/readme/IBM-interview-video-image.png)](https://youtu.be/vOgCOoy_Bx0)
+
+
 
 ### Project development roadmap
 
