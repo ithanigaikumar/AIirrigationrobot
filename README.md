@@ -90,17 +90,10 @@ INSTRUCTIONS: List any other IBM technology or IBM AI services used in your solu
 
 **Additional IBM AI services (Remove any that you did not use)**
 
-- [Watson Machine Learning](https://cloud.ibm.com/catalog/services/watson-machine-learning) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
 
-- [Watson Studio](https://cloud.ibm.com/catalog/services/watson-studio) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
+- [Text to Speech](https://cloud.ibm.com/catalog/services/text-to-speech) -  IBM Watson Text to Speech was used to read out updates based on real-time data processing. The system informed the user about each attribute of the plant, including humidity, temperature, and soil moisture. By converting data into speech, the user was notified if these quantities were too high, too low, or within optimal ranges, allowing them to respond accordingly in real-time.
 
-- [Natural Language Understanding](https://cloud.ibm.com/catalog/services/natural-language-understanding) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
 
-- [Speech to Text](https://cloud.ibm.com/catalog/services/speech-to-text) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-
-- [Text to Speech](https://cloud.ibm.com/catalog/services/text-to-speech) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
-
-- [Language Translator](https://cloud.ibm.com/catalog/services/language-translator) - WHERE AND HOW THIS IS USED IN OUR SOLUTION
 
 ### Solution architecture
 
