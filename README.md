@@ -114,7 +114,7 @@ _INSTRUCTIONS: The following deliverables should be officially posted to your My
 
 ### Solution demo video
 
-<iframe width="560" height="315" src="https://youtu.be/KQNzkZr5zK0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Watch the Video](https://img.youtube.com/vi/KQNzkZr5zK0/0.jpg)](https://www.youtube.com/watch?v=KQNzkZr5zK0)
 
 
 
