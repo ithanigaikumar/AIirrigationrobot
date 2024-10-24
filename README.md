@@ -97,16 +97,16 @@ INSTRUCTIONS: List any other IBM technology or IBM AI services used in your solu
 
 ### Solution architecture
 
-REPLACE THIS EXAMPLE WITH YOUR OWN, OR REMOVE THIS EXAMPLE
+![solution_architecture](https://github.com/user-attachments/assets/788ca3e0-5025-40f7-8cf5-8daeced9226b)
 
 Diagram and step-by-step description of the flow of our solution:
 
-![Video transcription/translaftion app](https://developer.ibm.com/developer/tutorials/cfc-starter-kit-speech-to-text-app-example/images/cfc-covid19-remote-education-diagram-2.png)
+1. Plant sensors send environment data every 5 mins to server
+2. Server fetches weather forecast data every 6 hrs and stores this, as well as received plant data, in database.
+3. Server, based on current plant state and forecast, sends movement commands to move to optimal location.
+4. Watson Assistant, communicating with server, can be used to enquire about the current plant status.
+5. Watson Text to Speech is used to give relvant plant status updates (that might require user intervention).
 
-1. The user navigates to the site and uploads a video file.
-2. Watson Speech to Text processes the audio and extracts the text.
-3. Watson Translation (optionally) can translate the text to the desired language.
-4. The app stores the translated text as a document within Object Storage.
 
 ## Presentation materials
 
