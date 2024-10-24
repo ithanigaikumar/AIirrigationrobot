@@ -124,11 +124,12 @@ The project currently does the following things.
 - Feature 2
 - Feature 3
 
-In the future we plan to...
+In the future we plan to... next steps
 
-See below for our proposed schedule on next steps after Call for Code 2024 submission.
+See below for our timeline of the project development before the Call for Code 2024 submission.
 
-![Roadmap](./images/roadmap.jpg)
+![Timeline April-May](.timeline_1.jpg)
+![Timeline May-June](.timeline_2.jpg)
 
 ## Additional details
 
