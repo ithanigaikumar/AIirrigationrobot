@@ -1,3 +1,4 @@
+from app import schemas
 from app.database import get_db_connection
 
 
@@ -5,14 +6,14 @@ class PlantService:
 
     # TODO: Search a plant API + extract relevant fields
     @staticmethod
-    def create_plant(plant_id: str, name: str, light: float, temperature: float, moisture: float):
+    def create_plant(plant: schemas.Plant):
         conn = get_db_connection()
         cursor = conn.cursor()
         query = """
             INSERT INTO plants (plant_id, name, light, temperature, moisture)
             VALUES (%s, %s, %s, %s, %s)
         """
-        cursor.execute(query, (plant_id, name, light, temperature, moisture))
+        cursor.execute(query, (plant.plant_id, plant.name, plant.light, plant.temperature, plant.moisture))
         conn.commit()
         cursor.close()
         conn.close()

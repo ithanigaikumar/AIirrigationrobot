@@ -22,12 +22,12 @@ constexpr int SOIL_SENSOR_MAX = 1000;
 constexpr int DHT_TYPE = DHT11;
 
 // Network Configuration
-const char* WIFI_SSID = "Irrigation";
-const char* WIFI_PASSWORD = "Ajanthan";
-const char* MQTT_SERVER = "212.229.81.98";
+const char* WIFI_SSID = "";
+const char* WIFI_PASSWORD = "";
+const char* MQTT_SERVER = "";
 constexpr int MQTT_PORT = 59529;
-const char* MQTT_USERNAME = "irrigation";
-const char* MQTT_PASSWORD = "ImperialIrrigation";
+const char* MQTT_USERNAME = "";
+const char* MQTT_PASSWORD = "";
 
 // Timing Constants
 constexpr unsigned long MQTT_INTERVAL = 200;
