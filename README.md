@@ -128,8 +128,8 @@ In the future we plan to... next steps
 
 See below for our timeline of the project development before the Call for Code 2024 submission.
 
-![Timeline April-May](.timeline_1.jpg)
-![Timeline May-June](.timeline_2.jpg)
+![Timeline April-May](timeline_1.jpg)
+![Timeline May-June](timeline_2.jpg)
 
 ## Additional details
 
