@@ -1,16 +1,8 @@
 [![License](https://img.shields.io/badge/License-Apache2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Community](https://img.shields.io/badge/Join-Community-blue)](https://developer.ibm.com/callforcode/solutions/projects/get-started/)
 
-_INSTRUCTIONS: This GitHub repository serves as a template and example you can use to create a well documented README for your project for the [2024 Call for Code Global Challenge](https://developer.ibm.com/callforcode/global-challenge/)._
+# AI Irrigation Robot
 
-Your required deliverables and project descriptions should be officially submitted to your My Team > Submissions section of the [Call for Code Global Challenge web site](https://compete.callforcode.skillsnetwork.site/competitions/2024-call-for-code-global-challenge), but you can also optionally include them here for completeness, as it is good practice to clearly document your project in your README file. Replace the examples seen here with your own deliverable links.
-
-Use the **Use this template** button to create a new version of this repository and start entering content for your own Call for Code submission project. Make sure you have [registered for the 2024 Call for Code Global Challenge](https://www.ibm.com/account/reg/signup?formid=urx-52643) to access resources and full project submission instructions. Remove any "INSTRUCTIONS" sections when you are ready to submit your project.
-
-_New to Git and GitHub? This free online course will get you up to speed quickly: [Getting Started with Git and GitHub](https://www.coursera.org/learn/getting-started-with-git-and-github)_.
-
-# Replace this heading with your team/submission name
-
-- [Replace this heading with your team/submission name](#replace-this-heading-with-your-teamsubmission-name)
+- [AI Irrigation Robot](#ai-irrigation-robot)
   - [Project summary](#project-summary)
     - [The issue we are hoping to solve](#the-issue-we-are-hoping-to-solve)
     - [How our technology solution can help](#how-our-technology-solution-can-help)
@@ -33,8 +25,6 @@ _New to Git and GitHub? This free online course will get you up to speed quickly
     - [Authors](#authors)
     - [License](#license)
     - [Acknowledgments](#acknowledgments)
-
-_INSTRUCTIONS: Below are the suggested sections to include in your README file to make sure your project is well documented. You can remove this instruction text._
 
 ## Project summary
 
@@ -66,8 +56,6 @@ More detail is available in our [description document](./docs/DESCRIPTION.md).
 
 ### IBM watsonx product(s) used
 
-_INSTRUCTIONS: Included here is a list of IBM watsonx products. Remove any products you did not use. Leave only those included in your solution code. In your official submission on the Call for Code Global Challenge web site, you are required to provide details on where and how you used each IBM watsonx product so judges can review your implementation. Remove these instructions._
-
 **Featured watsonx products**
 
 - [watsonx.ai](https://www.ibm.com/products/watsonx-ai)
@@ -86,14 +74,9 @@ The dialogues in these streams were structured using intuitive flowcharts, ensur
 
 ### Other IBM technology used
 
-INSTRUCTIONS: List any other IBM technology or IBM AI services used in your solution and describe how each component was used. If you can provide details on where these were used in your code, that would help the judges review your submission.
-
 **Additional IBM AI services (Remove any that you did not use)**
 
-
 - [Text to Speech](https://cloud.ibm.com/catalog/services/text-to-speech) -  IBM Watson Text to Speech was used to read out updates based on real-time data processing. The system informed the user about each attribute of the plant, including humidity, temperature, and soil moisture. By converting data into speech, the user was notified if these quantities were too high, too low, or within optimal ranges, allowing them to respond accordingly in real-time.
-
-
 
 ### Solution architecture
 
@@ -116,8 +99,6 @@ _INSTRUCTIONS: The following deliverables should be officially posted to your My
 [![Click](https://img.youtube.com/vi/e40uuCl1DfM/0.jpg)](https://www.youtube.com/watch?v=e40uuCl1DfM)
 
 
-
-
 ### Project development roadmap
 
 The robot currently autonomously relocates itself to look after a plant while ensuring it moves to the desired areas; water, sunlight, shade, while taking in updates from the weather app and the sensor data. The chatbot uses the text-to-speech feature for easy communication with the robot. 
@@ -131,12 +112,7 @@ In the future the project could be developed further to upscale our robot for ag
 
 ## Additional details
 
-_INSTRUCTIONS: The following deliverables are suggested, but **optional**. Additional details like this can help the judges better review your solution. Remove any sections you are not using._
-
 ### How to run the project
-
-
-#### Prerequisites
 
 Before you start, ensure you have the `ibm_cloud_sdk_core` downloaded.
 
@@ -160,10 +136,8 @@ To set up the project, follow these steps:
     docker build -t ai-irrigation-chatbot . 
     docker run -p 8080:80 ai-irrigation-chatbot
 
-
 5. **Navigate to http://localhost:8080/**
    Hover near the right-hand bottom corner for the chatbot, and type in update to get update. 
-
 
 ### Live demo
 
@@ -172,8 +146,6 @@ You can find a running system to test at...
 See our [description document](./docs/DESCRIPTION.md) for log in credentials.
 
 ---
-
-_INSTRUCTIONS: You can remove the below section from your specific project README._
 
 ## About this template
 
