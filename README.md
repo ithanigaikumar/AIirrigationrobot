@@ -114,7 +114,8 @@ _INSTRUCTIONS: The following deliverables should be officially posted to your My
 
 ### Solution demo video
 
-[![Watch the video!](https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)](https://youtu.be/KQNzkZr5zK0)
+<iframe width="560" height="315" src="https://youtu.be/KQNzkZr5zK0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 
 ### Project development roadmap
